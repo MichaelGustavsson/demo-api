@@ -28,6 +28,7 @@ const products = [
 ];
 
 const app = express();
+const port = process.env.PORT || 5001;
 
 // http://localhost:5001/api/products...
 // endpoint och metod att fånga upp anropet...
@@ -60,7 +61,6 @@ app.put('/api/products/:id', (req, res) => {
     .json({ success: true, message: 'Testar upplägget för uppdatering' });
 });
 
-const PORT = 5001;
-app.listen(PORT, () =>
-  console.log(`Servern är uppe och lyssnar på porten ${PORT}`)
+app.listen(port, () =>
+  console.log(`Servern är uppe och lyssnar på porten ${port}`)
 );
