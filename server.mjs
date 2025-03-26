@@ -62,5 +62,5 @@ app.put('/api/products/:id', (req, res) => {
 });
 
 app.listen(port, () =>
-  console.log(`Servern är uppe och lyssnar på porten ${port}`)
+  console.log(`Servern är uppe och lyssnar på port nummer: ${port}`)
 );
