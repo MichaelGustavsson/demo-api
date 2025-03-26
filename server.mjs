@@ -52,13 +52,11 @@ app.delete('/api/products/:id', (req, res) => {
 
 app.put('/api/products/:id', (req, res) => {
   const product = products.find((p) => p.id === req.params.id);
-  product.name = 'Våffla';
+  product.name = req.body.name;
   product.price = reg.body.price;
   product.weight = req.body.weight;
 
-  res
-    .status(200)
-    .json({ success: true, message: 'Testar upplägget för uppdatering' });
+  res.status(204);
 });
 
 app.listen(port, () =>
