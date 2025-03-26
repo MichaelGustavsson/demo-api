@@ -30,33 +30,49 @@ const products = [
 const app = express();
 const port = process.env.PORT || 5001;
 
-// http://localhost:5001/api/products...
-// endpoint och metod att fånga upp anropet...
+app.use(express.json());
+
 app.get('/api/products', (req, res) => {
-  // req = anropet och eventuellt data som kommer in...
-  // res = svaret som endpoint ska skicka tillbaka...
   res.status(200).json({ success: true, data: products });
 });
 
 app.get('/api/products/:id', (req, res) => {
   const id = req.params.id;
   const product = products.find((p) => p.id === id);
-  res.status(200).json({ success: true, data: product });
+  if (product) {
+    res.status(200).json({ success: true, data: product });
+    return;
+  }
+
+  res
+    .status(404)
+    .json({ success: false, message: 'Hittar ingen produkt med angivet id' });
 });
 
 app.delete('/api/products/:id', (req, res) => {
-  const product = products.find((p) => p.id === req.params.id);
-  products.splice(products.indexOf(product), 1);
-  res.status(204);
+  try {
+    const product = products.find((p) => p.id === req.params.id);
+    products.splice(products.indexOf(product), 1);
+    res.status(204).end();
+  } catch (error) {
+    res.status(500).json({ success: false, message: error });
+  }
 });
 
 app.put('/api/products/:id', (req, res) => {
   const product = products.find((p) => p.id === req.params.id);
-  product.name = req.body.name;
-  product.price = reg.body.price;
-  product.weight = req.body.weight;
 
-  res.status(204);
+  if (product) {
+    product.name = req.body.name;
+    product.price = req.body.price;
+    product.weight = req.body.weight;
+    res.status(204).end();
+    return;
+  }
+
+  res
+    .status(404)
+    .json({ success: false, message: 'Hittar ingen produkt med angivet id' });
 });
 
 app.listen(port, () =>
